@@ -14,14 +14,30 @@ router.post("/register",
 		try {
 			const { name, email, password } = req.body;
 
+
+
 			const existingUser = await User.findOne({ email });
 
 			if (existingUser) {
 				return res.status(400).json({ message: "User already exist" });
 			}
 
+			// let userId : any = 0;
+			// const lastUser = await User.find({ _id: -1 });
+			const lastUser = await User.findOne().sort({ _id: -1 }).exec();
+			// if (!lastUser) {
+			// 	userId = 1
+			// } else {
+
+			// }
+			console.log({ lastUser });
+			// @ts-ignore
+			const userId = !lastUser ? 1 : (lastUser?.userId + 1)
+
+
+
 			const hashedPassword = await bcrypt.hash(password, 10);
-			const user = new User({ name, email, password: hashedPassword });
+			const user = new User({ userId, name, email, password: hashedPassword });
 
 			await user.save();
 			res.status(201).json({ message: "User registered successfully" });

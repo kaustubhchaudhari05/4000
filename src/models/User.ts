@@ -1,5 +1,9 @@
-import mongoose from "mongoose";
-import { AutoIncrementID } from 'mongoose-sequence';
+// import mongoose from "mongoose";
+// import { AutoIncrementID } from 'mongoose-sequence';
+import mongoose from 'mongoose';
+// import AutoIncrementFactory from 'mongoose-sequence'; // ← This is the factory
+
+// const AutoIncrement = AutoIncrementFactory(mongoose); 
 
 export interface IUser extends mongoose.Document {
   userId: number,
@@ -15,7 +19,9 @@ const userSchema = new mongoose.Schema<IUser>({
   password: { type: String, required: true },
 });
 
-userSchema.plugin(AutoIncrementID, { field: 'userId' });
+// userSchema.plugin(AutoIncrementID, { field: 'userId' });
+
+// userSchema.plugin(AutoIncrement, { inc_field: 'userId' });
 
 const User = mongoose.model<IUser>("User", userSchema);
 
