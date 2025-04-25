@@ -7,10 +7,8 @@ const router = Router();
 // @ts-ignore
 router.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    console.log(email, password,"***");
+    console.log(email, password, "***");
     const existingUser = await User.findOne({ email });
-
-    console.log(existingUser,"existingUserc");
 
     if (!existingUser) {
         return res.status(404).json({ message: 'Login not defined' });
@@ -23,7 +21,13 @@ router.post('/login', async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Incorrect password!!' });
     }
 
-    return res.status(200).json({ message: "Login successful!!" })
+    const userDetails = {
+        userId: existingUser?.userId,
+        name: existingUser?.name,
+        email: existingUser?.email
+    }
+
+    return res.status(200).json({ message: "Login successful!!", data: userDetails })
 })
 
-export {router as loginRoute};
+export { router as loginRoute };
